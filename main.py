@@ -3,12 +3,13 @@ from fastapi import FastAPI, Depends
 import pymysql
 
 app = FastAPI()
+db_password= os.getenv('DB_PASSWORD')
 
 def get_db():
     connection = pymysql.connect(
         host="testsqlserverdaniyal38.mysql.database.azure.com",
         user="daniyal",
-        password="Up32hl9989",
+        password=db_password,
         database="fastapidb",
         port=3306,
         ssl={"ssl": {}}
@@ -46,3 +47,4 @@ def post_user_info(name: str, email: str, db=Depends(get_db)):
     insert_query = "INSERT INTO users (name, email) VALUES (%s, %s)"
     run_query(db, insert_query, params=(name, email), fetch=None)
     return {"message": f"User {name} added successfully"}
+
